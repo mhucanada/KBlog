@@ -1,0 +1,33 @@
+{
+  "tasks": [
+    {
+      "content": "Do math homework",
+      "id": 0.6805766174741372,
+      "status": false,
+      "category": "school",
+      "date": "Sat Aug 22 2020 17:39:34 GMT-0400 (Eastern Daylight Time)"
+    }
+  ],
+  "categories": [
+    {
+      "category": "Work",
+      "id": "Work"
+    },
+    {
+      "category": "School",
+      "id": "School"
+    },
+    {
+      "category": "Personal",
+      "id": "Personal"
+    },
+    {
+      "category": "Health",
+      "id": "Heath"
+    },
+    {
+      "category": "Social",
+      "id": "Social"
+    }
+  ]
+}
