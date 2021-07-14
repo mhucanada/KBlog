@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/tasks
+Content-Type: application/json
+
+{
+     "content": "please work",
+    "status": false,
+    "category": "work",
+    "date": "45"
+}
