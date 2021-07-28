@@ -21,6 +21,7 @@ const errorHandler = (error, request, response, next) => {
     return response.status(400).json({ error: error.message })
   }
 
+  //needs to call next here or else the call will hang
   next(error)
 }
 

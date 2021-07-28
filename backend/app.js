@@ -18,6 +18,7 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
     logger.error('error connecting to MongoDB:', error.message)
   })
 
+// all middleware, each one will be used whenever there is an api call
 app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
