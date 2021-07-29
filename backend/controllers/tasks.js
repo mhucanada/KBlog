@@ -1,5 +1,6 @@
 const taskRouter = require('express').Router()
 const Task = require('../models/task')
+const User = require('../models/user')
 
 taskRouter.get('/', (request, response) => {
   Task.find({}).then((tasks) => {
@@ -7,9 +8,9 @@ taskRouter.get('/', (request, response) => {
   })
 })
 
-
-taskRouter.post('/', (request, response) => {
-  const body = request.body
+taskRouter.post('/', async (request, response) => {
+  const { body } = request
+  const user = await User.findById(body.userId)
 
   if (body.content === undefined) {
     return response.status(400).json({
@@ -22,17 +23,20 @@ taskRouter.post('/', (request, response) => {
     status: false,
     category: body.category,
     date: body.date,
+    user: user._id,
   })
 
-  task.save()
-    .then((savedTask) => savedTask.toJSON())
-    .then((savedAndFormattedTask) => {
-      response.json(savedAndFormattedTask)
-    })
+  const savedTask = await task.save()
+
+  /* concats the task id to the tasks array in the user */
+  user.tasks = user.tasks.concat(savedTask._id)
+  await user.save()
+
+  response.json(savedTask.toJSON)
 })
 
 taskRouter.put('/:id', (request, response) => {
-  const body = request.body
+  const { body } = request
 
   const task = {
     content: body.content,

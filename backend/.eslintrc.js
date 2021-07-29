@@ -4,7 +4,7 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: 'eslint:recommended',
+  extends: 'airbnb',
   parserOptions: {
     ecmaVersion: 12,
   },
@@ -14,5 +14,7 @@ module.exports = {
     quotes: ['error', 'single'],
     semi: ['error', 'never'],
     'no-console': 0,
+    'no-param-reassign': 0,
+    'no-underscore-dangle': 'off',
   },
 }
