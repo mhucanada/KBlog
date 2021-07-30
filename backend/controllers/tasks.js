@@ -2,10 +2,13 @@ const taskRouter = require('express').Router()
 const Task = require('../models/task')
 const User = require('../models/user')
 
-taskRouter.get('/', (request, response) => {
-  Task.find({}).then((tasks) => {
+taskRouter.get('/', async (request, response) => {
+  const tasks = await Task.find({}).populate('user', { username: 1, name: 1 })
+
+  response.json(tasks)
+  /* Task.find({}).then((tasks) => {
     response.json(tasks.map((task) => task.toJSON()))
-  })
+  }) */
 })
 
 taskRouter.post('/', async (request, response) => {

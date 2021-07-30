@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
-mongoose.set('useFindAndModify', false)
 
+mongoose.set('useFindAndModify', false)
 
 const taskSchema = new mongoose.Schema({
   content: String,
@@ -9,8 +9,8 @@ const taskSchema = new mongoose.Schema({
   date: String,
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }
+    ref: 'User',
+  },
 })
 
 taskSchema.set('toJSON', {
@@ -18,7 +18,7 @@ taskSchema.set('toJSON', {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
     delete returnedObject.__v
-  }
+  },
 })
 
 module.exports = mongoose.model('Task', taskSchema)
