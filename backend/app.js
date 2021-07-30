@@ -29,7 +29,7 @@ app.use(express.json())
 app.use(middleware.requestLogger)
 
 app.use('/api/tasks', taskRouter)
-app.use('/api/categories', categoryRouter)
+app.use('/api/categorys', categoryRouter)
 app.use('/api/users', usersRouter)
 
 app.use(middleware.unknownEndpoint)
