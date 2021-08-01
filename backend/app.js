@@ -7,7 +7,7 @@ const app = express()
 const taskRouter = require('./controllers/tasks')
 const categoryRouter = require('./controllers/categorys')
 const usersRouter = require('./controllers/users')
-const loginRouter = require('./controllers/login')
+const loginRouter = require('./controllers/logins')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 
