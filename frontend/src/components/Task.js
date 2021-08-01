@@ -11,9 +11,9 @@ const Task = ({ task, toggleFinished, deleteTask }) => {
 		<div className='tasks'>
 			{/*<button onClick={toggleFinished}>{label}</button>*/}
 
-			<input type='checkbox' checked={checked} id='myCheck' onClick={toggleFinished}></input>
+			<input type='checkbox' checked={checked} id='myCheck' onChange={toggleFinished}></input>
 			{task.content}
-			<button onClick={deleteTask} id='deleteButton'>
+			<button onChange={deleteTask} id='deleteButton'>
 				x
 			</button>
 		</div>

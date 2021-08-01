@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react'
-import Task from './components/Task'
-import ProgressBar from './components/ProgressBar'
+import Task from './components/Task'/* 
+import ProgressBar from './components/ProgressBar' */
 import Dropdown from './components/Dropdown'
 import taskService from './services/tasks'
 import categoryService from './services/category'
+import loginService from './services/login'
 
 const App = () => {
 	const [tasks, setTasks] = useState([]) /*[varName, funcName] <- list of tasks*/
 	const [newTask, setNewTask] = useState('')
 	const [newCategory, setNewCategory] = useState('')
 	const [currentCategories, setCurrentCategories] = useState([])
+	const [errorMessage, setErrorMessage] = useState(null)
+
+	const [username, setUsername] = useState('')
+
+	const [password, setPassword] = useState('')
+	const [user, setUser] = useState(null)
 
 	useEffect(() => {
 		console.log('effect')
@@ -24,6 +31,15 @@ const App = () => {
 			setCurrentCategories(categories)
 			console.log(categories)
 		})
+	}, [])
+
+	useEffect(() => {
+		const loggedUserJSON = window.localStorage.getItem('loggedTaskappUser')
+		if (loggedUserJSON) {
+			const user = JSON.parse(loggedUserJSON)
+			setUser(user)
+			taskService.setToken(user.token)
+		}
 	}, [])
 
 	const addTask = (event) => {
@@ -59,6 +75,44 @@ const App = () => {
 				setNewCategory('')
 
 			})
+		}
+	}
+
+	const handleLogin = async (event) => {
+		event.preventDefault()
+
+		try {
+			const user = await loginService.login({
+				username, password
+			})
+
+			window.localStorage.setItem(
+				'loggedTaskappUser', JSON.stringify(user)
+			)
+			taskService.setToken(user.token)
+			setUser(user)
+			setUsername('')
+			setPassword('')
+		} catch (exception) {
+			setErrorMessage('Wrong credentials')
+			setTimeout(() => {
+				setErrorMessage(null)
+			}, 5000)
+		}
+
+		console.log('logging in with', username, password)
+	}
+
+	const handleLogOut = (event) => {
+		event.preventDefault()
+		try {
+			window.localStorage.removeItem('loggedTaskappUser')
+			window.location.reload()
+		} catch {
+			setErrorMessage('Already logged out')
+			setTimeout(() => {
+				setErrorMessage(null)
+			}, 5000)
 		}
 	}
 
@@ -101,9 +155,36 @@ const App = () => {
 		console.log(tasksDone);
     })
 
-	return (
-		<div>
-			<h2>Task List for {displayDate}</h2>
+		const loginForm = () => (
+			<form onSubmit={handleLogin}>
+			<div>
+				username
+					<input 
+					type="text" 
+					value={username}
+					name="Username"
+					onChange={({target}) => setUsername(target.value)}/>
+			</div>
+			<div>
+				password
+					<input 
+					type="password" 
+					value={password}
+					name="Password"
+					onChange={({target}) => setPassword(target.value)}/>
+			</div>
+			<button type="submit">login</button>
+			</form>
+		)
+
+		const logOutButton = () => (
+			<form onSubmit={handleLogOut}> 
+				<button type="submit">logout</button>
+			</form>
+		)
+
+		const taskForm = () => (
+			<>
 			<div>
 				{tasks.map((task, i) => (
 					<Task
@@ -132,14 +213,23 @@ const App = () => {
 				<input type="submit" value="Add" />
 				{/* <button type='submit'>save</button> */}
 			</form>
+			</>
+		)
 
-			<div className="right-side">
+	return (
+		<div>
+			<h2>Task List for {displayDate}</h2>		
+			{user === null && loginForm()}
+			{user !== null && taskForm()}
+
+			{user !== null && logOutButton()}
+			{/* <div className="right-side">
                 
                 <p>Overall</p>
                 <div/>
                 
                 <ProgressBar numberOfTasks={tasks.length} tasksDone={tasksDone} />
-            </div>
+            </div> */}
 
 		</div>
 			
