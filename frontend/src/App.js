@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Task from './components/Task'/* 
 import ProgressBar from './components/ProgressBar' */
 import Dropdown from './components/Dropdown'
+import Notification from './components/Notification'
 import taskService from './services/tasks'
 import categoryService from './services/category'
 import loginService from './services/login'
@@ -218,7 +219,8 @@ const App = () => {
 
 	return (
 		<div>
-			<h2>Task List for {displayDate}</h2>		
+			<h2>Task List for {displayDate}</h2>
+			<Notification message={errorMessage} />
 			{user === null && loginForm()}
 			{user !== null && taskForm()}
 

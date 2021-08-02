@@ -9,7 +9,7 @@ body {
   /*position: relative;
     height: 100%;
     width: 100%;*/
-  background-image: linear-gradient(to bottom right, #ffeeaa, #ffce2f);
+  background-color: #E9D2C0;
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
@@ -28,10 +28,10 @@ input {
 
 h2 {
   /*top title*/
-  background-color: #eea300;
+  background-color: #417B5A;
   padding: 30px;
-  -moz-border-radius: 20px;
-  -webkit-border-radius: 20px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
 }
 
 .right-side {
@@ -53,9 +53,23 @@ h2 {
 }
 
 .tasks {
-  background: #ffce2f;
+  background: #D0CEBA;
   padding: 13px 13px;
-  border-radius: 10px;
+  border-radius: 5px;
+  /*text-shadow: rgba(0, 0, 0, 0.4) 0 1px 0;*/
+  color: black;
+  font-size: 18px;
+  font-family: Georgia, serif;
+  text-decoration: none;
+  vertical-align: middle;
+  width: fit-content;
+  margin-bottom: 6px;
+}
+
+.error {
+  background: rgb(255, 113, 113);
+  padding: 13px 13px;
+  border-radius: 5px;
   /*text-shadow: rgba(0, 0, 0, 0.4) 0 1px 0;*/
   color: black;
   font-size: 18px;
