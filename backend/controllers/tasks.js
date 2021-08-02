@@ -22,6 +22,7 @@ taskRouter.get('/', async (request, response) => {
 
 taskRouter.post('/', async (request, response) => {
   const { body } = request
+  console.log('here')
   const token = getTokenFrom(request)
   // separates the token from the header, object will contain username
   // and id of the person making req
