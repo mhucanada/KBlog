@@ -20,7 +20,7 @@ usersRouter.post('/', async (request, response) => {
 
 usersRouter.get('/', async (request, response) => {
   // replaces path in the document with documents from other collections
-  const users = await User.find({}).populate('notes', { content: 1, date: 1 })
+  const users = await User.find({}).populate('tasks', { content: 1, date: 1 }).populate('comments', { content: 1, date: 1 })
   response.json(users)
 })
 

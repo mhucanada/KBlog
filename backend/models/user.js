@@ -5,10 +5,16 @@ const userSchema = new mongoose.Schema({
   username: { type: String, unique: true },
   name: String,
   passwordHash: String,
-  notes: [
+  tasks: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Note',
+      ref: 'Task',
+    },
+  ],
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment',
     },
   ],
 })

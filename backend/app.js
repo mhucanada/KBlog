@@ -10,6 +10,7 @@ const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/logins')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
+const commentRouter = require('./controllers/comments')
 
 logger.info('connecting to', config.MONGODB_URI)
 
@@ -30,6 +31,7 @@ app.use(express.json())
 app.use(middleware.requestLogger)
 
 app.use('/api/tasks', taskRouter)
+app.use('/api/comments', commentRouter)
 app.use('/api/categories', categoryRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)

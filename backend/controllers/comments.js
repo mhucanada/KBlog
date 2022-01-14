@@ -1,6 +1,6 @@
-const taskRouter = require('express').Router()
+const commentRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
-const Task = require('../models/task')
+const Comment = require('../models/comment')
 const User = require('../models/user')
 
 const getTokenFrom = (request) => {
@@ -11,19 +11,20 @@ const getTokenFrom = (request) => {
   return null
 }
 
-taskRouter.get('/', async (request, response) => {
-  const tasks = await Task.find({}).populate('user', { username: 1, name: 1 }).populate('comment', { content: 1, date: 1 })
+commentRouter.get('/', async (request, response) => {
+  const comments = await Comment.find({}).populate('user', { username: 1, name: 1 })
 
-  response.json(tasks)
-  /* Task.find({}).then((tasks) => {
-    response.json(tasks.map((task) => task.toJSON()))
+  response.json(comments)
+  /* Comment.find({}).then((comments) => {
+    response.json(comments.map((comment) => comment.toJSON()))
   }) */
 })
 
-taskRouter.post('/', async (request, response) => {
+commentRouter.post('/', async (request, response) => {
   const { body } = request
 
   const token = getTokenFrom(request)
+
   // separates the token from the header, object will contain username
   // and id of the person making req
   const decodedToken = jwt.verify(token, process.env.SECRET)
@@ -41,40 +42,36 @@ taskRouter.post('/', async (request, response) => {
     })
   }
 
-  const task = new Task({
-    title: body.title,
+  const comment = new Comment({
     content: body.content,
-    status: false,
-    category: body.category,
     date: body.date,
     user: user._id,
   })
 
-  const savedTask = await task.save()
+  const savedComment = await comment.save()
 
-  /* concats the task id to the tasks array in the user */
-  user.tasks = user.tasks.concat(savedTask._id)
+  /* concats the comment id to the comments array in the user */
+  user.comments = user.comments.concat(savedComment._id)
   await user.save()
-  response.json(savedTask.toJSON())
+  response.json(savedComment.toJSON())
 })
 
-taskRouter.put('/:id', (request, response) => {
+commentRouter.put('/:id', (request, response) => {
   const { body } = request
 
-  const task = {
+  const comment = {
     content: body.content,
-    status: body.status,
     category: body.category,
     date: body.date,
   }
 
-  Task.findByIdAndUpdate(request.params.id, task, { new: true }).then((updatedTask) => {
-    response.json(updatedTask.toJSON())
+  Comment.findByIdAndUpdate(request.params.id, comment, { new: true }).then((updatedComment) => {
+    response.json(updatedComment.toJSON())
   })
 })
 
-taskRouter.delete('/:id', (request, response, next) => {
-  Task.findByIdAndRemove(request.params.id)
+commentRouter.delete('/:id', (request, response, next) => {
+  Comment.findByIdAndRemove(request.params.id)
     .then(() => {
       response.status(204).end()
     })
@@ -82,4 +79,4 @@ taskRouter.delete('/:id', (request, response, next) => {
     .catch((error) => next(error))
 })
 
-module.exports = taskRouter
+module.exports = commentRouter

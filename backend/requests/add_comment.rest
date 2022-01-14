@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/comments
+Content-Type: application/json
+
+{
+    "content": "please work",
+    "date": "45",
+    "userId": "61da4af07dee34402e4b3778",
+}
+

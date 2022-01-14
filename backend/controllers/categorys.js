@@ -1,16 +1,14 @@
 const categoryRouter = require('express').Router()
 const Category = require('../models/category')
 
-
 categoryRouter.get('/', (request, response) => {
   Category.find({}).then((categories) => {
     response.json(categories.map((category) => category.toJSON()))
   })
 })
 
-
 categoryRouter.post('/', (request, response) => {
-  const body = request.body
+  const { body } = request
 
   if (body.category === undefined) {
     return response.status(400).json({

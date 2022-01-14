@@ -1,9 +1,10 @@
 require('dotenv').config()
 const express = require('express')
+
 const app = express()
+const cors = require('cors')
 const Task = require('./models/task')
 const Category = require('./models/category')
-const cors = require('cors')
 
 app.use(express.static('build'))
 app.use(cors())
@@ -22,7 +23,7 @@ app.get('/api/categories', (request, response) => {
 })
 
 app.post('/api/tasks', (request, response) => {
-  const body = request.body
+  const { body } = request
 
   if (body.content === undefined) {
     return response.status(400).json({
@@ -45,7 +46,7 @@ app.post('/api/tasks', (request, response) => {
 })
 
 app.post('/api/categories', (request, response) => {
-  const body = request.body
+  const { body } = request
 
   if (body.category === undefined) {
     return response.status(400).json({
@@ -66,7 +67,7 @@ app.post('/api/categories', (request, response) => {
 })
 
 app.put('/api/tasks/:id', (request, response) => {
-  const body = request.body
+  const { body } = request
 
   const task = {
     content: body.content,
