@@ -26,13 +26,13 @@ input {
   margin: 3px;
 }
 
-h2 {
-  /*top title*/
+/* h2 {
+  top title
   background-color: #417B5A;
   padding: 30px;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
-}
+} */
 
 .right-side {
   border: 5px;

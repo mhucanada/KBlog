@@ -1,0 +1,9 @@
+New Features
+
+- filter posts by public/private/unlisted
+- edit post button
+- can view other people's posts 
+- pagination/infinite scroll setting
+- personal profile page
+- create new account page
+- react router
