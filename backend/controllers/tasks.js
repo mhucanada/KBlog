@@ -73,13 +73,21 @@ taskRouter.put('/:id', (request, response) => {
   })
 })
 
-taskRouter.delete('/:id', (request, response, next) => {
-  Task.findByIdAndRemove(request.params.id)
-    .then(() => {
-      response.status(204).end()
-    })
-  // eslint-disable-next-line no-undef
-    .catch((error) => next(error))
+taskRouter.delete('/:id', async (request, response, next) => {
+  const toDelete = await Task.findById(request.params.id)
+  const token = getTokenFrom(request)
+
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+  if (decodedToken === toDelete.user) {
+    Task.findByIdAndRemove(request.params.id)
+      .then(() => {
+        response.status(204).end()
+      })
+    // eslint-disable-next-line no-undef
+      .catch((error) => next(error))
+  } else {
+    return response.status(401).json({ error: 'lol' })
+  }
 })
 
 module.exports = taskRouter

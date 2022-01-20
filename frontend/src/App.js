@@ -1,6 +1,6 @@
 import React from 'react'
 import { theme } from './theme.js'
-import MainPage from './pages/MainPage.js'
+import MainPage from './pages/MainPage/MainPage'
 
 import { ThemeProvider } from '@mui/styles'
 

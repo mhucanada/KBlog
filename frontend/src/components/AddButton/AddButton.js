@@ -6,18 +6,14 @@ import {
   Modal,
   Container,
   TextField,
-  collapseClasses,
   Button,
   MenuItem,
-  AppBar,
-  Typography,
   Alert,
   Snackbar,
 } from '@mui/material'
 import { Add as AddIcon } from '@mui/icons-material'
-import taskService from '../services/tasks'
-import categoryService from '../services/category'
-import commentService from '../services/comments'
+import taskService from '../../services/tasks'
+import categoryService from '../../services/category'
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -158,7 +154,14 @@ const AddButton = ({ tasks, setTasks }) => {
 
   return (
     <div>
-      <Tooltip title="Add" aria-label="add" onClick={() => setOpen(true)}>
+      <Tooltip
+        label="AddButton"
+        id="AddButton"
+        name="AddButton"
+        title="Add"
+        aria-label="add"
+        onClick={() => setOpen(true)}
+      >
         <Fab color="primary" className={classes.fab}>
           <AddIcon />
         </Fab>
@@ -174,6 +177,7 @@ const AddButton = ({ tasks, setTasks }) => {
             <div className={classes.item}>
               <TextField
                 id="standard-basic"
+                name="standard-basic"
                 label="Title"
                 value={newTitle}
                 onChange={handleTitleChange}
@@ -183,13 +187,14 @@ const AddButton = ({ tasks, setTasks }) => {
             </div>
             <div className={classes.item}>
               <TextField
-                id="outlined-multiline-static"
+                id="Description"
+                name="Description"
+                label="Description"
                 multiline
                 rows={4}
                 defaultValue="Enter text here..."
                 onChange={handleTaskChange}
                 value={newTask}
-                label="Description"
                 placeholder="Enter text here..."
                 size="small"
                 style={{ width: '100%' }}

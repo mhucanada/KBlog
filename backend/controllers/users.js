@@ -5,6 +5,12 @@ const User = require('../models/user')
 usersRouter.post('/', async (request, response) => {
   const { body } = request
 
+  if (body.username === '' || body.password === '' || body.password !== body.confirmPassword) {
+    return response.status(401).json({
+      error: 'invalid username or password',
+    })
+  }
+
   const passwordHash = await bcrypt.hash(body.password, 10)
 
   const user = new User({

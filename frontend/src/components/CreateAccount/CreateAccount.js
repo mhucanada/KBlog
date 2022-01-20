@@ -1,72 +1,56 @@
-import React, { useState, useEffect } from 'react'
-import CreateAccount from './CreateAccount'
-import Notification from './Notification'
-import taskService from '../services/tasks'
-import commentService from '../services/comments'
-import loginService from '../services/login'
+import React, { useState } from 'react'
+import Notification from '../Notification/Notification'
+import userService from '../../services/user'
 import { Link } from 'react-router-dom'
-import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { useAuth } from '../hooks/useAuth'
+import { useNavigate } from 'react-router-dom'
 
 const theme = createTheme()
 
-const LoginForm = () => {
+const CreateAccount = () => {
+  const [name, setName] = useState('')
   const [username, setUsername] = useState('')
+
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
-  const [user, setUser] = useState(null)
-
   const navigate = useNavigate()
-  const { state } = useLocation()
 
-  useEffect(() => {
-    if (window.localStorage.getItem('loggedTaskappUser')) {
-      navigate('/homepage')
-    }
-  }, [])
-
-  const handleLogin = async (event) => {
+  const handleCreateAccount = async (event) => {
     event.preventDefault()
 
     try {
-      const user = await loginService.login({
-        username,
-        password,
+      await userService.create({
+        username: username,
+        name: name,
+        password: password,
+        confirmPassword: confirmPassword,
       })
 
-      window.localStorage.setItem('loggedTaskappUser', JSON.stringify(user))
-      taskService.setToken(user.token)
-      commentService.setToken(user.token)
-      setUser(user)
       setUsername('')
       setPassword('')
-      navigate('/homepage')
+      setConfirmPassword('')
+      navigate('/loginpage')
+
     } catch (exception) {
       if (!username) {
         setErrorMessage('Please enter a username')
       } else if (!password) {
         setErrorMessage('Please enter a password')
-      } else {
-        setErrorMessage('Invalid credentials')
+      } else if (password !== confirmPassword) {
+        setErrorMessage('Passwords do not match')
       }
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
     }
-
-    console.log('logging in with', username, password)
   }
 
   return (
@@ -83,18 +67,28 @@ const LoginForm = () => {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Create An Account
           </Typography>
           <Box
             component="form"
-            onSubmit={handleLogin}
+            onSubmit={handleCreateAccount}
             noValidate
             sx={{ mt: 1 }}
           >
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="name"
+              name="name"
+              label="Name"
+              value={name}
+              onChange={({ target }) => setName(target.value)}
+              autoComplete="name"
+              autoFocus
+            />
+
             <TextField
               margin="normal"
               required
@@ -118,21 +112,30 @@ const LoginForm = () => {
               onChange={({ target }) => setPassword(target.value)}
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="confirmPassword"
+              label="Confirm Password"
+              id="confirmPassword"
+              type="password"
+              value={confirmPassword}
+              onChange={({ target }) => setConfirmPassword(target.value)}
+              autoComplete="current-password"
             />
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Go
             </Button>
             <Button
               component={Link}
-              to={'/'}
+              to={'/loginpage'}
               fullWidth
               variant="contained"
               sx={{ mt: 0, mb: 2 }}
@@ -146,9 +149,7 @@ const LoginForm = () => {
                 </Link> */}
               </Grid>
               <Grid item>
-                <Link to="/createaccount">
-                  {'Don\'t have an account? Sign Up'}
-                </Link>
+                <Link to="/loginpage">{'Already have an account? Log In'}</Link>
               </Grid>
             </Grid>
           </Box>
@@ -158,41 +159,4 @@ const LoginForm = () => {
   )
 }
 
-export default LoginForm
-
-// import React from 'react'
-
-// const LoginForm = ({
-//   handleSubmit,
-//   handleUsernameChange,
-//   handlePasswordChange,
-//   username,
-//   password,
-// }) => {
-//   return (
-//     <div>
-//       <h2> Login </h2>
-
-//       <form onSubmit={handleSubmit}>
-//         <div>
-//           username
-//           <input
-//             value={username}
-//             onChange={handleUsernameChange}
-//           />
-//         </div>
-//         <div>
-//           password
-//           <input
-//             type="password"
-//             value={password}
-//             onChange={handlePasswordChange}
-//           />
-//         </div>
-//         <button type="submit">login</button>
-//       </form>
-//     </div>
-//   )
-// }
-
-// export default LoginForm
+export default CreateAccount

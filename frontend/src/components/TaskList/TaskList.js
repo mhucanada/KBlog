@@ -1,22 +1,13 @@
 import React from 'react'
-import Task from './Task'
-import Dropdown from './Dropdown'
+import Task from '../Task/Task'
 
 import {
-  Button,
   createTheme,
   ThemeProvider,
   Container,
   CssBaseline,
-  Toolbar,
-  IconButton,
-  AppBar,
-  Typography,
   Box,
-  Stack,
-  Item,
 } from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
 import { makeStyles } from '@mui/styles'
 
 const theme = createTheme()

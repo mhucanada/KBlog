@@ -31,7 +31,7 @@ function ElevationScroll(props) {
 
 const LandingPage = ({ username, handleLogOut }) => {
   return (
-    username && (
+    !username && (
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Box sx={{ flexGrow: 1 }} position="sticky">

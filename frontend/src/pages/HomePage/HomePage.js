@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import jwtDecode from 'jwt-decode'
-import LandingPage from './LandingPage'
-import TaskList from '../components/TaskList'
-import AddButton from '../components/AddButton'
-import Notification from '../components/Notification'
-import taskService from '../services/tasks'
-import commentService from '../services/comments'
-import categoryService from '../services/category'
-import { ThemeProvider, createTheme, Toolbar, Grid } from '@mui/material'
+import HomeTopBar from '../../components/HomeTopBar/HomeTopBar'
+import TaskList from '../../components/TaskList/TaskList'
+import AddButton from '../../components/AddButton/AddButton'
+import Notification from '../../components/Notification/Notification'
+import taskService from '../../services/tasks'
+import commentService from '../../services/comments'
+import categoryService from '../../services/category'
+import { ThemeProvider, createTheme, Grid } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
 const theme = createTheme()
@@ -85,15 +85,7 @@ const HomePage = () => {
     setNewCategory(event.target.value)
   }
 
-  const toggleFinished = (id) => {
-    const task = tasks.find((n) => n.id === id)
 
-    const changedTask = { ...task, status: !task.status }
-
-    taskService.update(id, changedTask).then((returnedTask) => {
-      setTasks(tasks.map((task) => (task.id !== id ? task : returnedTask)))
-    })
-  }
 
   const deleteTask = (id) => {
     setTasks(tasks.filter((task) => task.id !== id))
@@ -106,7 +98,7 @@ const HomePage = () => {
   return (
     <ThemeProvider theme={theme}>
       <Notification message={errorMessage} />
-      <LandingPage
+      <HomeTopBar
         username={user ? user.username : ''}
         handleLogOut={handleLogOut}
       />
@@ -116,7 +108,6 @@ const HomePage = () => {
           <TaskList
             display={!!user}
             tasks={tasks}
-            toggleFinished={toggleFinished}
             deleteTask={deleteTask}
             newTask={newTask}
             handleTaskChange={handleTaskChange}
@@ -127,7 +118,7 @@ const HomePage = () => {
         </Grid>
         <Grid item sm={3}></Grid>
       </Grid>
-      {user && <AddButton tasks={tasks} setTasks={setTasks} />}
+      {user && <AddButton className={'AddButton'} tasks={tasks} setTasks={setTasks} />}
     </ThemeProvider>
   )
 }

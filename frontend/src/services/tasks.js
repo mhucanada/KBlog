@@ -27,7 +27,11 @@ const update = (id, newObject) => {
 }
 
 const deleteTask = (id) => {
-  return axios.delete(`${baseUrl}/${id}`)
+  const config = {
+    headers: { Authorization: token },
+  }
+
+  return axios.delete(`${baseUrl}/${id}`, config)
 }
 
 export default { getAll, create, update, deleteTask, setToken }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import taskService from '../services/tasks'
+import taskService from '../../services/tasks'
 import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
@@ -15,9 +15,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Task = ({ task, toggleFinished, deleteTask }) => {
+const Task = ({ task, deleteTask }) => {
   const classes = useStyles()
   const [openAlert, setOpenAlert] = useState(false)
+  const [openNoDeleteAlert, setOpenNoDeleteAlert] = useState(false)
 
   const handleCloseAlert = (event, reason) => {
     if (reason === 'clickaway') {
@@ -27,11 +28,25 @@ const Task = ({ task, toggleFinished, deleteTask }) => {
     setOpenAlert(false)
   }
 
+  const handleNoDeleteAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setOpenNoDeleteAlert(false)
+  }
+
   const handleDelete = () => {
     if (window.confirm('Are you sure you want to delete this?')) {
-      setOpenAlert(true)
-      taskService.deleteTask(task.id)
-      deleteTask(task.id)
+      taskService
+        .deleteTask(task.id)
+        .then(() => {
+          setOpenAlert(true)
+          deleteTask(task.id)
+        })
+        .catch(() => {
+          setOpenNoDeleteAlert(true)
+        })
     }
   }
 
@@ -64,6 +79,16 @@ const Task = ({ task, toggleFinished, deleteTask }) => {
         >
           <Alert onClose={handleCloseAlert} severity="success">
             Deleted post!
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          open={openNoDeleteAlert}
+          autoHideDuration={3000}
+          onClose={handleCloseAlert}
+        >
+          <Alert onClose={handleNoDeleteAlert} severity="warning">
+            Cannot delete other user&apos;s posts!
           </Alert>
         </Snackbar>
       </CardActions>

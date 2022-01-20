@@ -44,8 +44,11 @@ const MainPage = () => {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               KBlog
             </Typography>
-            <Button variant="contained" component={Link} to={'/loginpage'}>
+            <Button variant="contained" sx={{ margin: 1 }} component={Link} to={'/loginpage'}>
               LOG IN
+            </Button>
+            <Button variant="contained" sx={{ margin: 1 }} component={Link} to={'/createaccount'}>
+              SIGN UP
             </Button>
           </Toolbar>
         </AppBar>
